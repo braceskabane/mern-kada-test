@@ -26,12 +26,19 @@ const postSchema = new Schema(
       required: [true, "Category is required"],
       enum: [
         "General",
-        "Technology",
-        "Lifestyle",
-        "Education",
-        "Entertainment",
+        "Web Dev",
+        "AI/ML",
+        "DevOps",
+        "UI/UX",
+        "Q&A",
+        "Project",
       ],
       default: "General",
+    },
+    author: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Auth",
+      required: true,
     },
   },
   {
