@@ -1,0 +1,124 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f4f4f4;
+}
+
+nav ul {
+  display: flex;
+  list-style: none;
+  background: #333;
+  padding: 10px;
+  margin: 0;
+}
+
+nav ul li {
+  margin-right: 20px;
+}
+
+nav ul li a {
+  color: white;
+  text-decoration: none;
+}
+
+.posts-list {
+  max-width: 800px;
+  margin: 20px auto;
+}
+
+.post-card {
+  background: white;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 15px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.post-card h2 {
+  margin-top: 0;
+  color: #333;
+}
+
+.post-meta {
+  display: flex;
+  gap: 15px;
+  font-size: 0.85em;
+  color: #666;
+  margin-bottom: 10px;
+}
+
+.error {
+  color: red;
+  text-align: center;
+  padding: 10px;
+}
+
+.post-actions {
+  margin-top: 10px;
+  display: flex;
+  gap: 10px;
+}
+
+.post-actions a {
+  padding: 5px 10px;
+  border-radius: 4px;
+  text-decoration: none;
+  font-size: 0.85em;
+}
+
+.post-actions a:first-child {
+  background: #4caf50;
+  color: white;
+}
+
+.post-actions a:last-child {
+  background: #f44336;
+  color: white;
+}
+
+.title {
+  text-align: center;
+  color: #333;
+}
+
+.pagination {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.page-info {
+  margin-bottom: 10px;
+  color: #666;
+}
+
+.pagination-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+}
+
+.page-link {
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  text-decoration: none;
+  color: #333;
+  background: white;
+}
+
+.page-link.active {
+  background: #333;
+  color: white;
+  border-color: #333;
+}
+
+.page-link:hover {
+  background: #f0f0f0;
+}
+
+.page-link.disabled {
+  background: #eee;
+  color: #999;
+  cursor: not-allowed;
+}

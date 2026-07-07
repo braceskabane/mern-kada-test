@@ -1,0 +1,28 @@
+extends ../layout
+
+include ./pagination
+
+block content
+  h1.title Post List
+
+  if error
+    p.error= error
+
+  if posts.length
+    .posts-list
+      each post in posts
+        .post-card
+          h2= post.title
+          .post-meta
+            span.author oleh #{post.author}
+            span.category= post.category
+            span.date= post.createdAt.toLocaleDateString("id-ID")
+          p= post.content
+          .post-actions
+            a(href=`/post/${post._id}/edit`) Edit
+            a(href=`/post/${post._id}/delete`) Delete
+
+    +pagination("/posts", currentPage, totalPages, pages, hasPrevPage, hasNextPage, prevPage, nextPage, totalItems)
+
+  else
+    p Belum ada posts.

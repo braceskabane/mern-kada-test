@@ -1,0 +1,22 @@
+mixin pagination(path, currentPage, totalPages, pages, hasPrevPage, hasNextPage, prevPage, nextPage, totalItems)
+  nav.pagination
+    if totalPages > 0
+      .page-info Page #{currentPage} of #{totalPages} (#{totalItems} items)
+
+    .pagination-buttons
+      if hasPrevPage
+        a.page-link(href=`${path}/page/${prevPage}`) « Prev
+      else
+        span.page-link.disabled « Prev
+
+      if totalPages > 1
+        each page in pages
+          if page === currentPage
+            span.page-link.active= page
+          else
+            a.page-link(href=`${path}/page/${page}`)= page
+
+      if hasNextPage
+        a.page-link(href=`${path}/page/${nextPage}`) Next »
+      else
+        span.page-link.disabled Next »

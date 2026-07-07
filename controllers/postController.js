@@ -2,8 +2,28 @@ const Post = require("../models/Post");
 
 const getAllPosts = async (req, res) => {
   try {
-    const posts = await Post.find().sort({ createdAt: -1 });
-    res.json(posts);
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const skip = (page - 1) * limit;
+
+    const [posts, total] = await Promise.all([
+      Post.find().sort({ createdAt: -1 }).skip(skip).limit(limit),
+      Post.countDocuments(),
+    ]);
+
+    const totalPages = Math.ceil(total / limit);
+
+    res.json({
+      data: posts,
+      pagination: {
+        currentPage: page,
+        totalPages,
+        totalItems: total,
+        limit,
+        hasNextPage: page < totalPages,
+        hasPrevPage: page > 1,
+      },
+    });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
