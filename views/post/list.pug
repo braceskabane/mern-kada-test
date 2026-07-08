@@ -3,10 +3,12 @@ extends ../layout
 include ./pagination
 
 block content
-  h1.title Post List
+  .page-header
+    h1 Post List
+    a.btn.btn-primary(href="/posts/add") + Add Post
 
   if error
-    p.error= error
+    .alert.alert-error= error
 
   if posts.length
     .posts-list
@@ -14,15 +16,16 @@ block content
         .post-card
           h2= post.title
           .post-meta
-            span.author oleh #{post.author}
             span.category= post.category
-            span.date= post.createdAt.toLocaleDateString("id-ID")
-          p= post.content
+            span.date= post.createdAt.toLocaleDateString("id-ID", { day: 'numeric', month: 'short', year: 'numeric' })
+          p.post-content= post.content
           .post-actions
-            a(href=`/post/${post._id}/edit`) Edit
-            a(href=`/post/${post._id}/delete`) Delete
+            a.btn.btn-success.btn-sm(href=`/post/${post._id}/edit`) Edit
+            a.btn.btn-danger.btn-sm(href=`/post/${post._id}/delete`, onclick="return confirm('Are you sure you want to delete this post?')") Delete
 
     +pagination("/posts", currentPage, totalPages, pages, hasPrevPage, hasNextPage, prevPage, nextPage, totalItems)
 
   else
-    p Belum ada posts.
+    .empty-state
+      p Belum ada posts.
+      a.btn.btn-primary(href="/posts/add") + Add Post

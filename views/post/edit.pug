@@ -1,0 +1,20 @@
+extends ../layout
+
+block content
+  .form-card
+    h1 Edit Post
+    form(action=`/post/${post._id}/edit`, method="POST")
+      .form-group
+        label(for="title") Title
+        input(type="text", name="title", id="title", value=post.title, required)
+      .form-group
+        label(for="content") Content
+        textarea(name="content", id="content", required)= post.content
+      .form-group
+        label(for="category") Category
+        select(name="category", id="category", required)
+          each cat in ["General", "Web Dev", "AI/ML", "DevOps", "UI/UX", "Q&A", "Project"]
+            option(value=cat, selected=post.category===cat)= cat
+      .form-actions
+        button.btn.btn-primary(type="submit") Update Post
+        a.btn.btn-outline(href="/posts") Cancel

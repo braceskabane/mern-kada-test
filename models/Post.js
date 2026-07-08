@@ -15,12 +15,6 @@ const postSchema = new Schema(
       trim: true,
       maxlength: [1000, "Content cannot exceed 1000 characters"],
     },
-    author: {
-      type: String,
-      required: [true, "Author name is required"],
-      trim: true,
-      maxlength: [100, "Author name cannot exceed 100 characters"],
-    },
     category: {
       type: String,
       required: [true, "Category is required"],
@@ -38,7 +32,7 @@ const postSchema = new Schema(
     author: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Auth",
-      required: true,
+      required: false,
     },
   },
   {

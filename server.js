@@ -31,6 +31,8 @@ const PORT = process.env.PORT;
 
 connectDB();
 
+app.use(express.urlencoded({ extended: true }));
+
 app.use("/api/posts", postRoutes);
 app.use("/api", authRoutes);
 app.use("/", pugRoutes);

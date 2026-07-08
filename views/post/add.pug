@@ -1,0 +1,26 @@
+extends ../layout
+
+block content
+  .form-card
+    h1 Add Post
+    form(action="/posts/add", method="POST")
+      .form-group
+        label(for="title") Title
+        input(type="text", name="title", id="title", placeholder="Enter post title", required)
+      .form-group
+        label(for="content") Content
+        textarea(name="content", id="content", placeholder="Write your post content here...", required)
+      .form-group
+        label(for="category") Category
+        select(name="category", id="category", required)
+          option(value="", disabled selected) Select a category
+          option(value="General") General
+          option(value="Web Dev") Web Dev
+          option(value="AI/ML") AI/ML
+          option(value="DevOps") DevOps
+          option(value="UI/UX") UI/UX
+          option(value="Q&A") Q&A
+          option(value="Project") Project
+      .form-actions
+        button.btn.btn-primary(type="submit") Add Post
+        a.btn.btn-outline(href="/posts") Cancel

@@ -51,4 +51,39 @@ const renderPostList = async (req, res) => {
   }
 };
 
-module.exports = { getHomePage, renderPostList };
+const renderAddPostForm = async (req, res) => {
+  if (req.method === "GET") {
+    return res.render("post/add", {
+      siteTitle: req.app.locals.siteTitle,
+    });
+  }
+  const { title, content, category } = req.body;
+  await Post.create({ title, content, category });
+  res.redirect("/posts");
+};
+
+const renderEditPostForm = async (req, res) => {
+  if (req.method === "GET") {
+    const post = await Post.findById(req.params.id);
+    return res.render("post/edit", {
+      siteTitle: req.app.locals.siteTitle,
+      post,
+    });
+  }
+  const { title, content, category } = req.body;
+  await Post.findByIdAndUpdate(req.params.id, { title, content, category });
+  res.redirect("/posts");
+};
+
+const renderDeletePostForm = async (req, res) => {
+  await Post.findByIdAndDelete(req.params.id);
+  res.redirect("/posts");
+};
+
+module.exports = {
+  getHomePage,
+  renderPostList,
+  renderAddPostForm,
+  renderEditPostForm,
+  renderDeletePostForm,
+};
