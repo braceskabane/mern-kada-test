@@ -1,6 +1,6 @@
 mixin pagination(path, currentPage, totalPages, pages, hasPrevPage, hasNextPage, prevPage, nextPage, totalItems)
   if totalPages > 0
-    nav.pagination
+    div.pagination
       .page-info Page #{currentPage} of #{totalPages} (#{totalItems} items)
       .pagination-buttons
         if hasPrevPage
