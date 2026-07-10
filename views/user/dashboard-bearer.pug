@@ -1,0 +1,49 @@
+extends ../layout
+
+block content
+  h1 Dashboard (Bearer Token)
+
+  if user
+    .welcome
+      h2 Welcome, #{user.name}!
+      p Email: #{user.email}
+
+    h3 Your JWT Token:
+    code#token-display(style="background: #f4f4f4; padding: 10px; display: block; word-break: break-all;")= token
+
+    h3 Protected Content:
+    p This page is protected using Bearer token authentication.
+
+    button(onclick="copyToken()") Copy Token
+    |
+    |
+    button(onclick="fetchProtectedData()") Fetch Protected Data
+
+    #result(style="margin-top: 20px;")
+
+  else
+    p You are not logged in.
+    a(href="/login-bearer") Login here
+
+  script.
+    function copyToken() {
+      const token = document.getElementById('token-display').textContent;
+      navigator.clipboard.writeText(token);
+      alert('Token copied to clipboard!');
+    }
+
+    function fetchProtectedData() {
+      const token = document.getElementById('token-display').textContent;
+      fetch('/api/posts', {
+        headers: {
+          'Authorization': 'Bearer ' + token
+        }
+      })
+      .then(res => res.json())
+      .then(data => {
+        document.getElementById('result').innerHTML = '<pre>' + JSON.stringify(data, null, 2) + '</pre>';
+      })
+      .catch(err => {
+        document.getElementById('result').innerHTML = '<p style="color: red;">Error: ' + err.message + '</p>';
+      });
+    }

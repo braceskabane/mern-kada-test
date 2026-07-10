@@ -1,4 +1,8 @@
 const Post = require("../models/Post");
+const User = require("../models/Auth");
+const bcrypt = require("bcryptjs");
+const passport = require("passport");
+const { generateToken, setTokenCookie } = require("../controllers/authController");
 
 const getHomePage = (req, res) => {
   res.render("index", { siteTitle: req.app.locals.siteTitle });
@@ -80,10 +84,90 @@ const renderDeletePostForm = async (req, res) => {
   res.redirect("/posts");
 };
 
+const registerUser = async (req, res) => {
+  if (req.method === "GET") {
+    return res.render("user/register", {
+      siteTitle: req.app.locals.siteTitle,
+    });
+  }
+  try {
+    const { name, email, password, confirmPassword } = req.body;
+
+    if (password !== confirmPassword) {
+      return res.render("user/register", {
+        siteTitle: req.app.locals.siteTitle,
+        error: "Passwords do not match",
+      });
+    }
+
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.render("user/register", {
+        siteTitle: req.app.locals.siteTitle,
+        error: "Email already exists",
+      });
+    }
+
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+
+    const user = await User.create({ name, email, password: hashedPassword });
+
+    const token = generateToken(user._id);
+    setTokenCookie(res, token);
+    res.redirect("/");
+  } catch (error) {
+    res.render("user/register", {
+      siteTitle: req.app.locals.siteTitle,
+      error: "Registration failed",
+    });
+  }
+};
+
+const loginUser = (req, res, next) => {
+  if (req.method === "GET") {
+    return res.render("user/login", {
+      siteTitle: req.app.locals.siteTitle,
+    });
+  }
+
+  passport.authenticate("local", (err, user, info) => {
+    if (err) {
+      return res.render("user/login", {
+        siteTitle: req.app.locals.siteTitle,
+        error: "Login failed",
+      });
+    }
+
+    if (!user) {
+      return res.render("user/login", {
+        siteTitle: req.app.locals.siteTitle,
+        error: info.message || "Invalid email or password",
+      });
+    }
+
+    const token = generateToken(user._id);
+    setTokenCookie(res, token);
+    res.redirect("/");
+  })(req, res, next);
+};
+
+const logoutUser = (req, res) => {
+  res.clearCookie("token", {
+    httpOnly: true,
+    sameSite: "strict",
+    secure: process.env.NODE_ENV === "production",
+  });
+  res.redirect("/login");
+};
+
 module.exports = {
   getHomePage,
   renderPostList,
   renderAddPostForm,
   renderEditPostForm,
   renderDeletePostForm,
+  registerUser,
+  loginUser,
+  logoutUser,
 };

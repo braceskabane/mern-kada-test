@@ -1,0 +1,41 @@
+extends ../layout
+
+block content
+  h1 Register (Bearer Token)
+
+  if error
+    p(style="color: red;")= error
+
+  if success
+    p(style="color: green;")= success
+    h3 Your Token:
+    code(style="background: #f4f4f4; padding: 10px; display: block; word-break: break-all;")= token
+    h3 User Info:
+    pre= JSON.stringify(user, null, 2)
+    p
+      a(href="/dashboard-bearer") Go to Dashboard
+
+  else
+    form(action="/register-bearer", method="POST")
+      div
+        label(for="name") Name
+        input(type="text", name="name", required)
+
+      div
+        label(for="email") Email
+        input(type="email", name="email", required)
+
+      div
+        label(for="password") Password
+        input(type="password", name="password", required)
+
+      div
+        label(for="confirmPassword") Confirm Password
+        input(type="password", name="confirmPassword", required)
+
+      div
+        button(type="submit") Register
+
+    p
+      | Already have an account? 
+      a(href="/login-bearer") Login

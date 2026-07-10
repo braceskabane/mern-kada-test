@@ -1,0 +1,33 @@
+extends ../layout
+
+block content
+  h1 Login (Bearer Token)
+
+  if error
+    p(style="color: red;")= error
+
+  if success
+    p(style="color: green;")= success
+    h3 Your Token:
+    code(style="background: #f4f4f4; padding: 10px; display: block; word-break: break-all;")= token
+    h3 User Info:
+    pre= JSON.stringify(user, null, 2)
+    p
+      a(href="/dashboard-bearer") Go to Dashboard
+
+  else
+    form(action="/login-bearer", method="POST")
+      div
+        label(for="email") Email
+        input(type="email", name="email", required)
+
+      div
+        label(for="password") Password
+        input(type="password", name="password", required)
+
+      div
+        button(type="submit") Login
+
+    p
+      | Don't have an account? 
+      a(href="/register-bearer") Register
